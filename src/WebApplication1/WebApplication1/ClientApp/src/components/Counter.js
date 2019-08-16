@@ -10,8 +10,6 @@ const Counter = props => (
     <p>This is a simple example of a React component.</p>
 
     <p>Current count: <strong>{props.count}</strong></p>
-    <button onClick={() => { props.increment() }}>Increment</button>
-    <button onClick={() => { props.decrement() }}>Decrement</button>
     <button className="btn btn-primary" onClick={props.increment}>Increment</button>
     <button className="btn btn-primary" onClick={props.decrement}>Decrement</button>
     <button className="btn btn-secondary" onClick={props.reset}>Reset</button>

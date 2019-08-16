@@ -8,10 +8,8 @@ import * as SignalR from '@aspnet/signalr';
 // const connection = new SignalR.HubConnection('http://localhost:53343/SignalRCounter');
 
 let connection = new SignalR.HubConnectionBuilder()
-    .withUrl("/hubs/signalrcounter")
+    .withUrl("/signalr")
     .build();
-
-connection.start();
 
 export function signalRInvokeMiddleware(store: any) {
     return (next: any) => async (action: any) => {
@@ -21,6 +19,9 @@ export function signalRInvokeMiddleware(store: any) {
                 break;
             case "SIGNALR_DECREMENT_COUNT":
                 connection.invoke('DecrementCounter');
+                break;
+            case "SIGNALR_RESET_COUNT":
+                connection.invoke('ResetCounter');
                 break;
         }
 
@@ -40,18 +41,16 @@ export function signalRRegisterCommands(store: any, callback: Function) {
         console.log("Count has been decremented");
     })
 
+    connection.on('ResetCounter', data => {
+        store.dispatch({ type: 'RESET_COUNT' })
+        console.log("Count has been reset");
+    })
+
     connection.start().then(function () {
         // messageTextBox.disabled = false;
         // sendButton.disabled = false;
         // console.log(arguments)
     });
-    /*
-
-     transactionConnection.start().then(() => {
-            transactionConnection.invoke('JoinGroup', 'ClientAccountTransaction').catch(err => console.error(err.toString()));
-        });
-     
-     */
 }
 
 export default function configureStore(history, initialState) {
@@ -63,7 +62,6 @@ export default function configureStore(history, initialState) {
     const middleware = [
         thunk,
         routerMiddleware(history),
-        //signalRRegisterCommands,
         signalRInvokeMiddleware
     ];
 
@@ -78,14 +76,16 @@ export default function configureStore(history, initialState) {
         ...reducers,
         routing: routerReducer
     });
-
-    // signalRRegisterCommands
-
-    // signalRRegisterCommands(cb);
-
-    return createStore(
+    
+    var store = createStore(
         rootReducer,
         initialState,
         compose(applyMiddleware(...middleware), ...enhancers)
     );
+
+    signalRRegisterCommands(store, () => {
+        console.log('')
+    });
+
+    return store;
 }

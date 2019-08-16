@@ -23,7 +23,7 @@ namespace WebApplication1
         {
             services.AddSignalR();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -46,15 +46,21 @@ namespace WebApplication1
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+                /*
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+            });
+            */
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<SignalRCounter>("/signalr");
             });
 
             app.UseSpa(spa =>
@@ -65,11 +71,6 @@ namespace WebApplication1
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
-
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<SignalRCounter>("/hubs/signalrcounter");
             });
         }
     }
