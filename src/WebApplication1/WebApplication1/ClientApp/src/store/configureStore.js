@@ -46,11 +46,7 @@ export function signalRRegisterCommands(store: any, callback: Function) {
         console.log("Count has been reset");
     })
 
-    connection.start().then(function () {
-        // messageTextBox.disabled = false;
-        // sendButton.disabled = false;
-        // console.log(arguments)
-    });
+    connection.start().then(() => callback());
 }
 
 export default function configureStore(history, initialState) {

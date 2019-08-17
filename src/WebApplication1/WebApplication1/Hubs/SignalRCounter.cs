@@ -21,7 +21,7 @@ namespace WebApplication1.Hubs
             return InvokeAsync("ResetCounter");
         }
 
-        public Task InvokeAsync(string action)
+        private Task InvokeAsync(string action)
         {
             var ConnectionIDToIgnore = new List<string> { Context.ConnectionId };
             

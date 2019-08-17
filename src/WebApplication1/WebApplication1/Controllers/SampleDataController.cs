@@ -3,20 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
+
+        public SampleDataController(ILogger<SampleDataController> logger)
+        {
+            _logger = logger;
+        }
+
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        private readonly ILogger<SampleDataController> _logger;
+
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts(int startDateIndex)
         {
+            _logger.LogInformation("Running the method WeatherForecasts");
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
