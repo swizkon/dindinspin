@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace WebApplication1.Hubs
+namespace DinDinSpinWeb.Hubs
 {
     public class SignalRCounter : Hub
     {
