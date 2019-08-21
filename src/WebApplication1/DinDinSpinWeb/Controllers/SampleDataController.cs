@@ -51,16 +51,14 @@ namespace DinDinSpinWeb.Controllers
 
             await container.CreateIfNotExistsAsync();
 
-            //await container.GetBlockBlobReference("file.json").SerializeObjectToBlobAsync(new Spinner());
+            var blobRef = container.GetBlockBlobReference("file.json");
 
-            var spinner = await container.GetBlockBlobReference("file.json").DeserializeObjectFromBlobAsync<Spinner>();
-
-            spinner = spinner ?? new Spinner();
+            var spinner = await blobRef.ReadFromBlobAsync(() => new Spinner());
 
             spinner.Summary = "A list of dinners";
             spinner.Id = spinner.Id ?? Guid.NewGuid().ToString();
 
-            await container.GetBlockBlobReference("file.json").SerializeObjectToBlobAsync(spinner);
+            await container.GetBlockBlobReference("file.json").WriteToBlobAsync(spinner);
 
             return new List<Spinner>(new[] { spinner });
         }
