@@ -71,16 +71,21 @@ namespace DinDinSpinWeb.Controllers
             var tableName = "dinners";
 
             var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
-            var serviceClient = account.CreateCloudBlobClient();
 
             var table = account.CreateCloudTableClient().GetTableReference(tableName);
 
             await table.CreateIfNotExistsAsync();
-            
-            var dinners = table.ExecuteAsync(new TableOperation());
-            
-            
-            return new List<Dinner>(new[] { new Dinner() });
+
+            TableContinuationToken token = null;
+            var entities = new List<Dinner>();
+            do
+            {
+                var queryResult = await table.ExecuteQuerySegmentedAsync(new TableQuery<Dinner>(), token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+
+            return entities;
         }
 
         public class WeatherForecast
@@ -108,7 +113,7 @@ namespace DinDinSpinWeb.Controllers
             public string Summary { get; set; }
         }
 
-        public class Dinner
+        public class Dinner : TableEntity
         {
             public string SpinnerId { get; set; }
 
