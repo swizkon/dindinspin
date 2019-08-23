@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace DinDinSpinWeb.Controllers
 {
@@ -63,6 +64,25 @@ namespace DinDinSpinWeb.Controllers
             return new List<Spinner>(new[] { spinner });
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Dinner>> Dinners()
+        {
+            var tableName = "dinners";
+
+            var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
+            var serviceClient = account.CreateCloudBlobClient();
+
+            var table = account.CreateCloudTableClient().GetTableReference(tableName);
+
+            await table.CreateIfNotExistsAsync();
+            
+            var dinners = table.ExecuteAsync(new TableOperation());
+            
+            
+            return new List<Dinner>(new[] { new Dinner() });
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }
@@ -84,6 +104,13 @@ namespace DinDinSpinWeb.Controllers
             public string Id { get; set; }
 
             public int TemperatureC { get; set; }
+
+            public string Summary { get; set; }
+        }
+
+        public class Dinner
+        {
+            public string SpinnerId { get; set; }
 
             public string Summary { get; set; }
         }
