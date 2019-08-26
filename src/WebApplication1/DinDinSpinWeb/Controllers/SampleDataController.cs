@@ -19,7 +19,8 @@ namespace DinDinSpinWeb.Controllers
             _logger = logger;
         }
 
-        private static string[] Summaries = {
+        private static string[] Summaries =
+        {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
@@ -56,12 +57,12 @@ namespace DinDinSpinWeb.Controllers
 
             var spinner = await blobRef.ReadFromBlobAsync(() => new Spinner());
 
-            spinner.Summary = "A list of dinners";
-            spinner.Id = spinner.Id ?? Guid.NewGuid().ToString();
+            //spinner.Summary = "A list of dinners";
+            //spinner.Id = spinner.Id ?? Guid.NewGuid().ToString();
 
-            await container.GetBlockBlobReference("file.json").WriteToBlobAsync(spinner);
+            //await container.GetBlockBlobReference("file.json").WriteToBlobAsync(spinner);
 
-            return new List<Spinner>(new[] { spinner });
+            return new List<Spinner>(new[] {spinner});
         }
 
 
@@ -88,6 +89,29 @@ namespace DinDinSpinWeb.Controllers
             return entities;
         }
 
+
+        [HttpPost("[action]")]
+        public async Task<TableResult> CreateDinner()
+        {
+            var tableName = "dinners";
+
+            var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
+
+            var table = account.CreateCloudTableClient().GetTableReference(tableName);
+
+            await table.CreateIfNotExistsAsync();
+
+            var dinner = new Dinner
+            {
+                PartitionKey = "spinner1",
+                RowKey = Guid.NewGuid().ToString(),
+                SpinnerId = Guid.NewGuid().ToString(),
+                Summary = "Taco-paj"
+            };
+
+            return await table.ExecuteAsync(TableOperation.InsertOrMerge(dinner));
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }
@@ -97,10 +121,7 @@ namespace DinDinSpinWeb.Controllers
 
             public int TemperatureF
             {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
+                get { return 32 + (int) (TemperatureC / 0.5556); }
             }
         }
 
