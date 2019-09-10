@@ -69,47 +69,19 @@ namespace DinDinSpinWeb.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Dinner>> Dinners()
         {
-            var tableName = "dinners";
+            // var tableName = "dinners";
 
-            var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
+            // var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
+            // var serviceClient = account.CreateCloudBlobClient();
 
-            var table = account.CreateCloudTableClient().GetTableReference(tableName);
+            // var table = account.CreateCloudTableClient().GetTableReference(tableName);
 
-            await table.CreateIfNotExistsAsync();
-
-            TableContinuationToken token = null;
-            var entities = new List<Dinner>();
-            do
-            {
-                var queryResult = await table.ExecuteQuerySegmentedAsync(new TableQuery<Dinner>(), token);
-                entities.AddRange(queryResult.Results);
-                token = queryResult.ContinuationToken;
-            } while (token != null);
-
-            return entities;
-        }
-
-
-        [HttpPost("[action]")]
-        public async Task<TableResult> CreateDinner()
-        {
-            var tableName = "dinners";
-
-            var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
-
-            var table = account.CreateCloudTableClient().GetTableReference(tableName);
-
-            await table.CreateIfNotExistsAsync();
-
-            var dinner = new Dinner
-            {
-                PartitionKey = "spinner1",
-                RowKey = Guid.NewGuid().ToString(),
-                SpinnerId = Guid.NewGuid().ToString(),
-                Summary = "Taco-paj"
-            };
-
-            return await table.ExecuteAsync(TableOperation.InsertOrMerge(dinner));
+            // await table.CreateIfNotExistsAsync();
+            
+            // var dinners = table.ExecuteAsync(new TableOperation());
+            
+            
+            return new List<Dinner>(new[] { new Dinner() });
         }
 
         public class WeatherForecast

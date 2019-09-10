@@ -10,14 +10,6 @@ interface ResetSignalRCountAction { type: 'SIGNALR_RESET_COUNT' }
 type KnownAction = IncrementCountAction | DecrementCountAction | IncrementSignalRCountAction | DecrementSignalRCountAction | ResetSignalRCountAction;
 
 
-/*
-export const actionCreators = {
-    increment: () => ({ type: incrementCountType }),
-    reset: () => ({ type: resetCountType }),
-    decrement: () => ({ type: decrementCountType })
-};
-*/
-
 export const actionCreators = {
     increment: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SIGNALR_INCREMENT_COUNT' });

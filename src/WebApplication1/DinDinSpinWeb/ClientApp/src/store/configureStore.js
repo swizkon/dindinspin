@@ -5,8 +5,6 @@ import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
 import * as SignalR from '@aspnet/signalr';
 
-// const connection = new SignalR.HubConnection('http://localhost:53343/SignalRCounter');
-
 let connection = new SignalR.HubConnectionBuilder()
     .withUrl("/signalr")
     .build();
