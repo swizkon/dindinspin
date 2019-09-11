@@ -67,20 +67,8 @@ namespace DinDinSpinWeb.Controllers
 
 
         [HttpGet("[action]")]
-        public async Task<IEnumerable<Dinner>> Dinners()
+        public Task<IEnumerable<Dinner>> Dinners()
         {
-            // var tableName = "dinners";
-
-            // var account = CloudStorageAccount.Parse(_configuration["StorageConnectionString"]);
-            // var serviceClient = account.CreateCloudBlobClient();
-
-            // var table = account.CreateCloudTableClient().GetTableReference(tableName);
-
-            // await table.CreateIfNotExistsAsync();
-            
-            // var dinners = table.ExecuteAsync(new TableOperation());
-            
-            
             return new List<Dinner>(new[] { new Dinner() });
         }
 

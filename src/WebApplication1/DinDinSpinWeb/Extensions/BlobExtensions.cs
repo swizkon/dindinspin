@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 
-namespace DinDinSpinWeb.Controllers
+namespace DinDinSpinWeb.Extensions
 {
     public static class BlobExtensions
     {
