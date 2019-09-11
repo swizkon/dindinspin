@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using DinDinSpinWeb.Extensions;
+using Domain.Models;
 
 namespace DinDinSpinWeb.Controllers
 {
@@ -67,7 +69,7 @@ namespace DinDinSpinWeb.Controllers
 
 
         [HttpGet("[action]")]
-        public Task<IEnumerable<Dinner>> Dinners()
+        public  IEnumerable<Dinner> Dinners()
         {
             return new List<Dinner>(new[] { new Dinner() });
         }
@@ -85,20 +87,5 @@ namespace DinDinSpinWeb.Controllers
             }
         }
 
-        public class Spinner
-        {
-            public string Id { get; set; }
-
-            public int TemperatureC { get; set; }
-
-            public string Summary { get; set; }
-        }
-
-        public class Dinner : TableEntity
-        {
-            public string SpinnerId { get; set; }
-
-            public string Summary { get; set; }
-        }
     }
 }

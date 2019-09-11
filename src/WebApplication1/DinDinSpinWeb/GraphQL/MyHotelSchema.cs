@@ -4,9 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using MyHotel.Entities;
-using MyHotel.GraphQL.Types;
-using MyHotel.Repositories;
+using Domain.Models;
+using Domain.Repositories;
+
+// using MyHotel.Entities;
+// using MyHotel.GraphQL.Types;
+// using MyHotel.Repositories;
 
 namespace DinDinSpinWeb.GraphQL
 {
@@ -16,12 +19,22 @@ namespace DinDinSpinWeb.GraphQL
     {
         public MyHotelSchema(IDependencyResolver resolver) : base(resolver)
         {
-            Query = resolver.Resolve<ReservationQuery>();
+            Query = resolver.Resolve<DinnerQuery>();
+        }
+    }
+
+    public class DinnerType : ObjectGraphType<Dinner>
+    {
+        public DinnerType()
+        {
+            Field(x => x.Id);
+            Field(x => x.Name);
+            Field(x => x.RegisterDate);
         }
     }
 
 
-    public class ReservationQuery : ObjectGraphType
+    public class DinnerQuery : ObjectGraphType
     {
         /*
          -- Simple test query --
@@ -48,14 +61,14 @@ namespace DinDinSpinWeb.GraphQL
 
         */
 
-        public ReservationQuery(ReservationRepository reservationRepository)
+        public DinnerQuery(DinnerRepository dinnerRepository)
         {
             /*Version: 1 get all*/
             //Field<ListGraphType<ReservationType>>("reservations",
             //    resolve: context => reservationRepository.GetQuery());
 
             /*Version: 2 filtering*/
-            Field<ListGraphType<ReservationType>>("reservations",
+            Field<ListGraphType<DinnerType>>("dinners",
                 arguments: new QueryArguments(new List<QueryArgument>
                 {
                     new QueryArgument<IdGraphType>
@@ -73,62 +86,55 @@ namespace DinDinSpinWeb.GraphQL
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "roomAllowedSmoking"
-                    },
+                    }
+                    /*,
                     new QueryArgument<RoomStatusType>
                     {
                         Name = "roomStatus"
-                    }
+                    }*/
                 }),
                 resolve: context =>
                 {
-                    var query = reservationRepository.GetQuery();
+                    var query = dinnerRepository.GetQuery();
 
                     var user = (ClaimsPrincipal)context.UserContext;
                     var isUserAuthenticated = ((ClaimsIdentity) user.Identity).IsAuthenticated;
 
-                    var reservationId = context.GetArgument<int?>("id");
-                    if (reservationId.HasValue)
+                    var dinnerId = context.GetArgument<int?>("id");
+                    if (dinnerId.HasValue)
                     {
-                        if (reservationId.Value <= 0)
+                        if (dinnerId.Value <= 0)
                         {
                             context.Errors.Add(new ExecutionError("reservationId must be greater than zero!"));
-                            return new List<Reservation>();
+                            return new List<Dinner>();
                         }
 
-                        return reservationRepository.GetQuery().Where(r => r.Id == reservationId.Value);
+                        return dinnerRepository.GetQuery().Where(d => d.Id == dinnerId.Value);
                     }
 
-                    var checkinDate = context.GetArgument<DateTime?>("checkinDate");
-                    if (checkinDate.HasValue)
-                    {
-                        return reservationRepository.GetQuery()
-                            .Where(r => r.CheckinDate.Date == checkinDate.Value.Date);
-                    }
+                    // var checkinDate = context.GetArgument<DateTime?>("checkinDate");
+                    // if (checkinDate.HasValue)
+                    // {
+                    //     return reservationRepository.GetQuery()
+                    //         .Where(r => r.CheckinDate.Date == checkinDate.Value.Date);
+                    // }
 
-                    var checkoutDate = context.GetArgument<DateTime?>("checkoutDate");
-                    if (checkoutDate.HasValue)
-                    {
-                        return reservationRepository.GetQuery()
-                            .Where(r => r.CheckoutDate.Date >= checkoutDate.Value.Date);
-                    }
+                    // var allowedSmoking = context.GetArgument<bool?>("roomAllowedSmoking");
+                    // if (allowedSmoking.HasValue)
+                    // {
+                    //     return reservationRepository.GetQuery()
+                    //         .Where(r => r.Room.AllowedSmoking == allowedSmoking.Value);
+                    // }
 
-                    var allowedSmoking = context.GetArgument<bool?>("roomAllowedSmoking");
-                    if (allowedSmoking.HasValue)
-                    {
-                        return reservationRepository.GetQuery()
-                            .Where(r => r.Room.AllowedSmoking == allowedSmoking.Value);
-                    }
-
-                    var roomStatus = context.GetArgument<RoomStatus?>("roomStatus");
-                    if (roomStatus.HasValue)
-                    {
-                        return reservationRepository.GetQuery().Where(r => r.Room.Status == roomStatus.Value);
-                    }
+                    // var roomStatus = context.GetArgument<RoomStatus?>("roomStatus");
+                    // if (roomStatus.HasValue)
+                    // {
+                    //     return reservationRepository.GetQuery().Where(r => r.Room.Status == roomStatus.Value);
+                    // }
 
                     return query.ToList();
                 }
             );
-
         }
     }
 }
