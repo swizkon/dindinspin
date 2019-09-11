@@ -30,7 +30,7 @@ class FetchData extends Component {
                 {renderPagination(this.props)}
                 <div>
                     <h2>New dinner</h2>
-                    <input type="text" placeholder="Enter dinner name" onChange= />
+                    <input type="text" placeholder="Enter dinner name" />
                 </div>
             </div>
         );
