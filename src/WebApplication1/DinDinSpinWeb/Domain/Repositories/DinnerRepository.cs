@@ -18,17 +18,17 @@ namespace Domain.Repositories
             _dbContext = dbContext;
         }
 
-        // public async Task<List<T>> GetAll<T>()
-        // {
-        //     return await GetQuery().ProjectTo<T>().ToListAsync();
-        // }
+        public async Task<List<T>> GetAll<T>()
+        {
+            return await GetQuery().ProjectTo<T>().ToListAsync();
+        }
 
         public async Task<IEnumerable<Dinner>> GetAll()
         {
             return await _dbContext
                 .Dinners
                 .Include(x => x.Spinner)
-                // .Include(x => x.Ingredients)
+                .Include(x => x.MainIngredient)
                 .ToListAsync();
         }
 
@@ -41,7 +41,7 @@ namespace Domain.Repositories
         {
             return _dbContext
                 .Dinners
-                // .Include(x => x.Room)
+                .Include(x => x.MainIngredient)
                 .Include(x => x.Spinner);
         }
     }

@@ -100,7 +100,7 @@ namespace DinDinSpinWeb.GraphQL
                     var user = (ClaimsPrincipal)context.UserContext;
                     var isUserAuthenticated = ((ClaimsIdentity) user.Identity).IsAuthenticated;
 
-                    var dinnerId = context.GetArgument<int?>("id");
+                    var dinnerId = context.GetArgument<int?>("id") ?? (int?) 123;
                     if (dinnerId.HasValue)
                     {
                         if (dinnerId.Value <= 0)

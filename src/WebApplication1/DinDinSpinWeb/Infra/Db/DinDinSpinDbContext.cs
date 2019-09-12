@@ -1,3 +1,4 @@
+using System;
 using DinDinSpin.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,9 @@ namespace DinDinSpinWeb.Infra.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Dinner>().HasData(new Dinner("Jonas", DateTime.Now));
+
             // //GUESTS
             // modelBuilder.Entity<Guest>().HasData(new Guest("Alper Ebicoglu", DateTime.Now.AddDays(-10)) { Id = 1 });
             // modelBuilder.Entity<Guest>().HasData(new Guest("George Michael", DateTime.Now.AddDays(-5)) { Id = 2 });

@@ -30,6 +30,7 @@ namespace DinDinSpin.Domain.Models
 
         public Dinner(string name, DateTime registerDate)
         {
+            Id = 123;
             Name = name;
             RegisterDate = registerDate;
         }
