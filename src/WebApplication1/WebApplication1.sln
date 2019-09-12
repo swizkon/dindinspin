@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinDinSpinWeb", "DinDinSpinWeb\DinDinSpinWeb.csproj", "{EA62507F-431A-459F-8A6F-EDB5C64B9598}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinDinSpinDomain", "DinDinSpinDomain\DinDinSpinDomain.csproj", "{A2813803-FC59-4F8B-84E0-A069D022B1DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EA62507F-431A-459F-8A6F-EDB5C64B9598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA62507F-431A-459F-8A6F-EDB5C64B9598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA62507F-431A-459F-8A6F-EDB5C64B9598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2813803-FC59-4F8B-84E0-A069D022B1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2813803-FC59-4F8B-84E0-A069D022B1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2813803-FC59-4F8B-84E0-A069D022B1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2813803-FC59-4F8B-84E0-A069D022B1DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

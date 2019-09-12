@@ -1,9 +1,7 @@
-
-using System;
+using DinDinSpin.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Domain.Models;
 
-namespace Infra.Db
+namespace DinDinSpinWeb.Infra.Db
 {
     public class DinDinSpinDbContext : DbContext
     {

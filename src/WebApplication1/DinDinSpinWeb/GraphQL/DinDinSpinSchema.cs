@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using Domain.Models;
+using DinDinSpin.Domain.Models;
 using Domain.Repositories;
 
 // using MyHotel.Entities;
@@ -15,9 +15,9 @@ namespace DinDinSpinWeb.GraphQL
 {
 
     // https://medium.com/volosoft/building-graphql-apis-with-asp-net-core-419b32a5305b
-    public class MyHotelSchema : Schema
+    public class DinDinSpinSchema : Schema
     {
-        public MyHotelSchema(IDependencyResolver resolver) : base(resolver)
+        public DinDinSpinSchema(IDependencyResolver resolver) : base(resolver)
         {
             Query = resolver.Resolve<DinnerQuery>();
         }

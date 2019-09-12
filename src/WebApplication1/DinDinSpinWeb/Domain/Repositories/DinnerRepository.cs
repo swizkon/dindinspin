@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
+using DinDinSpin.Domain.Models;
+using DinDinSpinWeb.Infra.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Domain.Models;
-using Infra.Db;
 
 namespace Domain.Repositories
 {
@@ -40,9 +40,9 @@ namespace Domain.Repositories
         public IIncludableQueryable<Dinner, Spinner> GetQuery()
         {
             return _dbContext
-                 .Dinners
-                 // .Include(x => x.Room)
-                 .Include(x => x.Spinner);
+                .Dinners
+                // .Include(x => x.Room)
+                .Include(x => x.Spinner);
         }
     }
 }
