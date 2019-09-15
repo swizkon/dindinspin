@@ -11,7 +11,7 @@ namespace DinDinSpin.Domain.Models
 
         [ForeignKey("SpinnerId")]
         public Spinner Spinner { get; set; }
-        public int SpinnerId { get; set; }
+        public Guid SpinnerId { get; set; }
 
         [ForeignKey("MainIngredientId")]
         public Ingredient MainIngredient { get; set; }

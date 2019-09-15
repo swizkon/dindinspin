@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DinDinSpin.Domain.Models
@@ -5,11 +7,13 @@ namespace DinDinSpin.Domain.Models
     public class Spinner
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        [StringLength(300)]
+        [StringLength(100)]
         public string Name { get; set; }
+
+        public ICollection<Dinner> Dinners { get; set; }
         
         public Spinner()
         {

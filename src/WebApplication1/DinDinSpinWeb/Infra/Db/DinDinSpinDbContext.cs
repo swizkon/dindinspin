@@ -6,7 +6,8 @@ namespace DinDinSpinWeb.Infra.Db
 {
     public class DinDinSpinDbContext : DbContext
     {
-        public static string DbConnectionString = "Server=localhost; Database=DinDinSpinDb; Trusted_Connection=True;";
+        // public static string DbConnectionString = "Server=localhost; Database=DinDinSpinDb; Trusted_Connection=True;";
+        public static string DbConnectionString = "Host=localhost;Port=5432;Username=dindinspin;Password=dindinspin;Database=dindinspindb;";
 
         public DinDinSpinDbContext(DbContextOptions<DinDinSpinDbContext> options)
             : base(options)
@@ -20,8 +21,7 @@ namespace DinDinSpinWeb.Infra.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<Dinner>().HasData(new Dinner("Jonas", DateTime.Now));
+            // modelBuilder.Entity<Dinner>().HasData(new Dinner("Jonas", DateTime.Now));
 
             // //GUESTS
             // modelBuilder.Entity<Guest>().HasData(new Guest("Alper Ebicoglu", DateTime.Now.AddDays(-10)) { Id = 1 });
@@ -37,7 +37,6 @@ namespace DinDinSpinWeb.Infra.Db
             // //RESERVATIONS
             // modelBuilder.Entity<Reservation>().HasData(new Reservation(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(3), 3, 1) { Id = 1 });
             // modelBuilder.Entity<Reservation>().HasData(new Reservation(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(4), 4, 2) { Id = 2 });
-
 
             base.OnModelCreating(modelBuilder);
         }

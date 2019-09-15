@@ -44,8 +44,9 @@ namespace DinDinSpinWeb
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDbContext<DinDinSpinDbContext>(options => options.UseInMemoryDatabase(DinDinSpinDbContext.DbConnectionString));
-            // services.AddDbContext<MyHotelDbContext>(options => options.UseSqlServer(MyHotelDbContext.DbConnectionString));
+            // services.AddDbContext<DinDinSpinDbContext>(options => options.UseInMemoryDatabase(DinDinSpinDbContext.DbConnectionString));
+            services.AddDbContext<DinDinSpinDbContext>(options => options.UseNpgsql(DinDinSpinDbContext.DbConnectionString));
+            
             services.AddTransient<DinnerRepository>();
 
             //***< GraphQL Services >*** 
