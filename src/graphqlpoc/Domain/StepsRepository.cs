@@ -32,7 +32,8 @@ namespace graphqlpoc.Domain
                         Id = i,
                         UserId = "User-" + (i % 3 + 1),
                         Start = date,
-                        End = date.AddMinutes(rnd.Next(30, 120))
+                        End = date.AddMinutes(rnd.Next(30, 120)),
+                        StepCount = rnd.Next(10, 500)
                     };
                 }
                 );

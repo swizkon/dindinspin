@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL;
@@ -21,10 +22,6 @@ namespace graphqlpoc.Domain
                     {
                         Name = "userid"
                     },
-                    new QueryArgument<IdGraphType>
-                    {
-                        Name = "id"
-                    },
                     new QueryArgument<DateGraphType>
                     {
                         Name = "start"
@@ -42,7 +39,18 @@ namespace graphqlpoc.Domain
                     if (userId != null)
                     {
                         query = query.Where(d => d.UserId == userId);
-                        // return stepsRepository.GetQuery().Where(d => d.UserId == userId);
+                    }
+
+                    var startTime = context.GetArgument<DateTime?>("start");
+                    if (startTime.HasValue)
+                    {
+                        query = query.Where(d => d.Start >= startTime);
+                    }
+
+                    var endTime = context.GetArgument<DateTime?>("end");
+                    if (endTime.HasValue)
+                    {
+                        query = query.Where(d => d.End <= endTime);
                     }
                     
                     return query.ToList();
