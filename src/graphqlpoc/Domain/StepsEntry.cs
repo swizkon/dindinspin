@@ -5,7 +5,7 @@ namespace graphqlpoc.Domain
     public class StepsEntry
     {
         public int Id { get; set; }
-        
+
         public string UserId { get; set; }
 
         public int StepCount { get; set; }

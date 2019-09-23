@@ -14,6 +14,35 @@ namespace graphqlpoc.Domain
             //Field<ListGraphType<ReservationType>>("reservations",
             //    resolve: context => reservationRepository.GetQuery());
 
+
+            /*Version: 2 filtering*/
+            Field<ListGraphType<StepSummaryType>>("stepcount",
+                arguments: new QueryArguments(new List<QueryArgument>
+                {
+                    new QueryArgument<StringGraphType>
+                    {
+                        Name = "users"
+                    },
+                    new QueryArgument<DateGraphType>
+                    {
+                        Name = "start"
+                    },
+                    new QueryArgument<DateGraphType>
+                    {
+                        Name = "end"
+                    }
+                }),
+                resolve: context =>
+                {
+                    var users = context.GetArgument<string>("users")?.Split(',') ?? Enumerable.Empty<string>();
+                    
+                    var query = stepsRepository.GetStepCount(users.ToArray(), start: DateTime.Now.AddMonths(-1), end: DateTime.Now);
+                    
+                    return query.ToList();
+                }
+            );
+
+
             /*Version: 2 filtering*/
             Field<ListGraphType<StepsEntryType>>("stepentries",
                 arguments: new QueryArguments(new List<QueryArgument>
