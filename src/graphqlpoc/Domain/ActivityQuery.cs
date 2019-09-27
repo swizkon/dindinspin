@@ -10,10 +10,34 @@ namespace graphqlpoc.Domain
     {
         public ActivityQuery(StepsRepository stepsRepository)
         {
-            /*Version: 1 get all*/
-            //Field<ListGraphType<ReservationType>>("reservations",
-            //    resolve: context => reservationRepository.GetQuery());
 
+            /*
+             * Consolidate multiple requests
+             */
+            Field<UserSummaryType>("usersummary",
+                arguments: new QueryArguments(new List<QueryArgument>
+                {
+                    new QueryArgument<StringGraphType>
+                    {
+                        Name = "user"
+                    }
+                }),
+                resolve: context =>
+                {
+                    var user = context.GetArgument<string>("user") ?? string.Empty;
+
+                    var repo = new Controllers.StepsController();
+                    var details = repo.GetUserDetails(user).Value;
+                    var steps = repo.GetUserSteps(user).Value;
+
+                    return new UserSummary()
+                    {
+                        UserId = user,
+                        Details = details,
+                        Steps = steps.ToArray()
+                    };
+                }
+            );
 
             /*Version: 2 filtering*/
             Field<ListGraphType<StepSummaryType>>("stepcount",

@@ -12,4 +12,7 @@ namespace graphqlpoc.Domain
             Field(x => x.End);
         }
     }
+
 }
+
+

@@ -24,6 +24,18 @@ namespace graphqlpoc.Controllers
             return "value";
         }
 
+        [HttpGet("{userid}")]
+        public ActionResult<string> GetUserDetails(string userid)
+        {
+            return "UserDetails for " + userid;
+        }
+
+        [HttpGet("{userid}")]
+        public ActionResult<IEnumerable<string>> GetUserSteps(string userid)
+        {
+            return Enumerable.Range(1,5).Select(i => "UserSteps " + i + " for " + userid).ToArray();
+        }
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)
