@@ -8,7 +8,7 @@ namespace DinDinSpin.Domain.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(300)]
+        [StringLength(100)]
         public string Name { get; set; }
 
         [Required]

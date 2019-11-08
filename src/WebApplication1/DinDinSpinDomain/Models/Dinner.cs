@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +17,8 @@ namespace DinDinSpin.Domain.Models
         [ForeignKey("MainIngredientId")]
         public Ingredient MainIngredient { get; set; }
         public int MainIngredientId { get; set; }
+        
+        public ICollection<Ingredient> Ingredients { get; set; }
 
         [Required]
         [StringLength(300)]
