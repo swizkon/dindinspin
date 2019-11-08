@@ -1,16 +1,4 @@
-
-//using DinnersGQL.Graph;
-//using GraphQL.Conventions;
-//using Microsoft.AspNetCore.Builder;
-//using Microsoft.AspNetCore.Hosting;
-
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.DependencyInjection;
-
-//using Microsoft.Extensions.Hosting;
-//using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
-
+using DinnersGQL.Domain;
 using GraphQL.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +29,8 @@ namespace DinnersGQL
             services.AddScoped<IUserContext, Schema.UserContext>();
             services.AddScoped<Schema.Query>();
             services.AddScoped<Schema.Mutation>();
+
+            services.AddScoped<IDinnerRepository, DinnerRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

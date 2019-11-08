@@ -1,21 +1,9 @@
 ﻿using System;
-using GraphQL.Conventions;
 using System.Reflection;
+using GraphQL.Conventions;
 
 namespace DinnersGQL.Graph
 {
-    internal sealed class Mutation
-    {
-    }
-
-    internal sealed class Query
-    {
-    }
-
-    internal sealed class UserContext : IUserContext
-    {
-    }
-
     internal sealed class Injector : IDependencyInjector
     {
         private readonly IServiceProvider _provider;
