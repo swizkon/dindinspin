@@ -12,8 +12,7 @@ namespace DinnerSpinner.Api.Domain.Services
 
         public SpinnerService(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
 
             _spinners = database.GetCollection<Spinner>(nameof(Spinner));
         }
@@ -38,5 +37,16 @@ namespace DinnerSpinner.Api.Domain.Services
 
         public void Remove(string id) =>
             _spinners.DeleteOne(spinner => spinner.Id == id);
+
+        public Spinner AddDinner(string spinnerId, Dinner dinner)
+        {
+            var spinner = Get(spinnerId);
+
+            spinner.Dinners.Add(dinner);
+
+            Update(spinner.Id, spinner);
+
+            return spinner;
+        }
     }
 }

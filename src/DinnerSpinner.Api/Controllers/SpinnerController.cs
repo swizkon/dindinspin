@@ -44,5 +44,14 @@ namespace DinnerSpinner.Api.Controllers
 
             return CreatedAtRoute("GetSpinner", new { id = spinner.Id }, spinner);
         }
+
+        [HttpPost("{spinnerId}/dinners")]
+        public ActionResult<Spinner> AddDinner([FromRoute] string spinnerId, [FromBody] Dinner dinner)
+        {
+            _logger.LogInformation("AddDinner {@Dinner}", dinner);
+            var spinner = _spinnerService.AddDinner(spinnerId, dinner);
+
+            return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
+        }
     }
 }

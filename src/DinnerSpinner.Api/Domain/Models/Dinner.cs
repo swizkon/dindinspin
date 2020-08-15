@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace DinnerSpinner.Api.Domain.Models
 {
+    [BsonIgnoreExtraElements]
     public class Dinner
     {
-        public int Id { get; set; }
+        // public int Id { get; set; }
 
         public Ingredient MainIngredient { get; set; }
         

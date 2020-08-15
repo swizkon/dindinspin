@@ -13,6 +13,6 @@ namespace DinnerSpinner.Api.Domain.Models
         [BsonElement("Name")]
         public string Name { get; set; }
 
-        public ICollection<Dinner> Dinners { get; set; }
+        public ICollection<Dinner> Dinners { get; set; } = new List<Dinner>();
     }
 }
