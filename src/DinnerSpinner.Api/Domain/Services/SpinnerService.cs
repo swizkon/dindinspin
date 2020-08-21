@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using DinnerSpinner.Api.Domain.Contracts;
 using MongoDB.Driver;
 
 namespace DinnerSpinner.Api.Domain.Services
@@ -8,43 +11,63 @@ namespace DinnerSpinner.Api.Domain.Services
 
     public class SpinnerService
     {
+        private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Spinner> _spinners;
+        private readonly IMongoCollection<User> _users;
 
         public SpinnerService(IDatabaseSettings settings)
         {
-            var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-
-            _spinners = database.GetCollection<Spinner>(nameof(Spinner));
+            _database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
+            _spinners = _database.GetCollection<Spinner>(nameof(Spinner));
         }
 
-        public List<Spinner> Get() =>
-            _spinners.Find(spinner => true).ToList();
+        public List<Spinner> Get() => _spinners.Find(spinner => true).ToList();
 
-        public Spinner Get(string id) =>
-            _spinners.Find<Spinner>(spinner => spinner.Id == id).FirstOrDefault();
+        public Spinner Get(string id) => _spinners.Find(spinner => spinner.Id == id).FirstOrDefault();
 
-        public Spinner Create(Spinner spinner)
+        public async Task<Spinner> Create(CreateSpinner createSpinner)
         {
-            _spinners.InsertOne(spinner);
-            return spinner;
+            using var session = await _database.Client.StartSessionAsync();
+
+            try
+            {
+                var spinner = new Spinner
+                {
+                    Name = createSpinner.Name,
+                    Version = 1,
+                    Members = new List<UserRef>
+                    {
+                        new UserRef
+                        {
+                            Name = createSpinner.OwnerName,
+                            Email = createSpinner.OwnerEmail
+                        }
+                    }
+                };
+
+                await _spinners.InsertOneAsync(session, spinner);
+
+                return spinner;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
-        public void Update(string id, Spinner spinnerIn) =>
-            _spinners.ReplaceOne(spinner => spinner.Id == id, spinnerIn);
-
-        public void Remove(Spinner spinnerIn) =>
-            _spinners.DeleteOne(spinner => spinner.Id == spinnerIn.Id);
+        public Task UpdateAsync(string id, Spinner spinnerIn) => _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
 
         public void Remove(string id) =>
             _spinners.DeleteOne(spinner => spinner.Id == id);
 
-        public Spinner AddDinner(string spinnerId, Dinner dinner)
+        public async Task<Spinner> AddDinner(string spinnerId, Dinner dinner)
         {
             var spinner = Get(spinnerId);
 
             spinner.Dinners.Add(dinner);
 
-            Update(spinner.Id, spinner);
+            await UpdateAsync(spinner.Id, spinner);
 
             return spinner;
         }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using DinnerSpinner.Api.Domain.Contracts;
 using DinnerSpinner.Api.Domain.Models;
 using DinnerSpinner.Api.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,6 @@ namespace DinnerSpinner.Api.Controllers
             _logger = logger;
         }
 
-
         [HttpGet]
         public ActionResult<List<Spinner>> Get() => _spinnerService.Get();
 
@@ -37,19 +38,19 @@ namespace DinnerSpinner.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Spinner> Create(Spinner spinner)
+        public async Task<IActionResult> Create([FromBody]CreateSpinner spinner)
         {
             _logger.LogInformation("Create {@Spinner}", spinner);
-            _spinnerService.Create(spinner);
+            var result = await _spinnerService.Create(spinner);
 
-            return CreatedAtRoute("GetSpinner", new { id = spinner.Id }, spinner);
+            return CreatedAtRoute("GetSpinner", new { id = result.Id }, spinner);
         }
 
         [HttpPost("{spinnerId}/dinners")]
-        public ActionResult<Spinner> AddDinner([FromRoute] string spinnerId, [FromBody] Dinner dinner)
+        public async Task<IActionResult> AddDinner([FromRoute] string spinnerId, [FromBody] Dinner dinner)
         {
             _logger.LogInformation("AddDinner {@Dinner}", dinner);
-            var spinner = _spinnerService.AddDinner(spinnerId, dinner);
+            var spinner = await _spinnerService.AddDinner(spinnerId, dinner);
 
             return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
         }

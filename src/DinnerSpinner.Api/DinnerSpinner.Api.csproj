@@ -5,6 +5,10 @@
     <UserSecretsId>2de16c5a-4e6f-4446-96e6-20a9c0f0fa5a</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="appsettings.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

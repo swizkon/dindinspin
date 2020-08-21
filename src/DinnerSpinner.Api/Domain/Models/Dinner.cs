@@ -7,10 +7,6 @@ namespace DinnerSpinner.Api.Domain.Models
     [BsonIgnoreExtraElements]
     public class Dinner
     {
-        // public int Id { get; set; }
-
-        public Ingredient MainIngredient { get; set; }
-        
         public ICollection<Ingredient> Ingredients { get; set; }
 
         [BsonElement("Name")]
