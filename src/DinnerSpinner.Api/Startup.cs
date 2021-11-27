@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DinnerSpinner.Api.Domain.Contracts;
 using DinnerSpinner.Api.Domain.Models;
 using DinnerSpinner.Api.Domain.Services;
@@ -57,7 +58,19 @@ namespace DinnerSpinner.Api
                 OwnerEmail = "jonas@example.com"
             }).Result;
 
-            var dd = service.AddDinner(spinner.Id, new Dinner()).Result;
+            var dd = service.AddDinner(spinner.Id, new Dinner
+            {
+                Name = "Saucisse au four",
+                Link = "https://www.cuisineactuelle.fr/recettes/saucisse-au-four-319676",
+                Ingredients = new List<Ingredient>()
+                {
+                    new Ingredient
+                    {
+                        Name = "Kryddig korv"
+                    }
+                }
+                // 
+            }).Result;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
